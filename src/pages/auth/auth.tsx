@@ -2,12 +2,12 @@ import { Button, Form, FormProps, Input, Space } from 'antd'
 import Link from 'antd/es/typography/Link'
 import Title from 'antd/es/typography/Title'
 import { useNotify } from 'app/providers/app'
-import { IMainFields } from 'pages/auth/login/model/interface'
-import { StyledForgetPass, StyledFormContainer } from 'pages/auth/login/model/styles'
+import { IMainFields } from 'pages/auth/model/interface'
+import { StyledForgetPass, StyledFormContainer } from 'pages/auth/model/styles'
 import React, { FC } from 'react'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
 
-export const Login: FC = () => {
+export const Auth: FC = () => {
   const [auth, handleAuth] = useToggle()
   const { openNotification } = useNotify()
 

@@ -1,3 +1,3 @@
-import { Login } from 'pages/auth/login/login'
+import { Auth } from 'pages/auth/auth'
 
-export { Login }
+export { Auth }
