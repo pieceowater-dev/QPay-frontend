@@ -18,12 +18,12 @@ export const useNotify = () => {
 
 export const App = () => {
   const openNotification = (
-    type: INotificationType,
     title: string,
-    subtitle: string,
-    placement: NotificationArgsProps['placement'],
+    type?: INotificationType,
+    subtitle?: string,
+    placement?: NotificationArgsProps['placement'],
   ) => {
-    notification[type]({
+    notification[type || 'error']({
       message: title,
       description: subtitle,
       placement,

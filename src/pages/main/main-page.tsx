@@ -1,11 +1,14 @@
 import { Flex } from 'antd'
-import { Login } from 'pages/auth'
+import { Auth } from 'pages/auth'
 import React, { FC } from 'react'
+import { useCookies } from 'react-cookie'
 
 export const MainPage: FC = () => {
+  const [{ token }] = useCookies(['token'])
+
   return (
     <Flex justify={'center'} align={'center'} style={{ height: '100vh', flexDirection: 'column' }}>
-      <Login />
+      {token ? <>Ты в сети</> : <Auth />}
     </Flex>
   )
 }

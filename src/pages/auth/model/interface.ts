@@ -1,5 +1,6 @@
 export type IMainFields = {
-  username: string
+  email: string
   password: string
   confirm?: string
+  name?: string
 }
