@@ -5,31 +5,64 @@ import { useNotify } from 'app/providers/app'
 import { IMainFields } from 'pages/auth/model/interface'
 import { StyledForgetPass, StyledFormContainer } from 'pages/auth/model/styles'
 import React, { FC } from 'react'
+import { useCookies } from 'react-cookie'
+import axiosInstance from 'shared/api/api-query/api-query'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
 
 export const Auth: FC = () => {
   const [auth, handleAuth] = useToggle()
   const { openNotification } = useNotify()
+  const [_, updateToken] = useCookies(['token'])
 
   const onFinish: FormProps<IMainFields>['onFinish'] = (data) => {
-    if (!auth && data.password !== data.confirm)
-      return openNotification('error', 'Пароли не совпадают', '', 'bottomRight')
+    if (auth && data.password !== data.confirm) return openNotification('Пароли не совпадают')
+
+    if (auth) {
+      axiosInstance
+        .post('/auth/registration', { ...data, confirm: undefined })
+        .then(() => {
+          openNotification('Регистрация прошла успешно', 'success')
+          handleAuth()
+        })
+        .catch(() => {
+          openNotification('Что-то пошло не так')
+        })
+    } else {
+      axiosInstance
+        .post('/auth/login', data)
+        .then((res) => {
+          updateToken('token', res.data.token)
+        })
+        .catch(() => {
+          openNotification('Что-то пошло не так')
+        })
+    }
   }
 
   return (
     <StyledFormContainer>
       <Title level={3} style={{ textAlign: 'center' }}>
-        {auth ? 'Вход' : 'Регистрация'}
+        {!auth ? 'Вход' : 'Регистрация'}
       </Title>
       <Form
         onFinish={onFinish}
-        initialValues={{ username: '', password: '', confirm: '' }}
+        initialValues={{ email: '', password: '', confirm: '' }}
         layout={'vertical'}
       >
+        {auth && (
+          <Form.Item<IMainFields>
+            label={'Имя пользователя'}
+            name={'name'}
+            rules={[{ required: true, message: 'Введите имя пользователя' }]}
+          >
+            <Input />
+          </Form.Item>
+        )}
+
         <Form.Item<IMainFields>
-          label={'Имя пользователя'}
-          name={'username'}
-          rules={[{ required: true, message: 'Введите имя пользователя' }]}
+          label={'Почта'}
+          name={'email'}
+          rules={[{ required: true, message: 'Введите почту' }]}
         >
           <Input />
         </Form.Item>
@@ -42,7 +75,7 @@ export const Auth: FC = () => {
           <Input.Password />
         </Form.Item>
 
-        {!auth && (
+        {auth && (
           <Form.Item<IMainFields>
             label={'Подтвердите пароль'}
             name={'confirm'}
@@ -54,12 +87,12 @@ export const Auth: FC = () => {
 
         <Space style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <StyledForgetPass>
-            <Link onClick={handleAuth}>{!auth ? 'Войти' : 'Зарегистрироваться'}</Link>
+            <Link onClick={handleAuth}>{auth ? 'Войти' : 'Зарегистрироваться'}</Link>
           </StyledForgetPass>
 
           <Form.Item>
             <Button type='primary' htmlType='submit'>
-              {auth ? 'Войти в систему' : 'Зарегистрироваться'}
+              {!auth ? 'Войти в систему' : 'Зарегистрироваться'}
             </Button>
           </Form.Item>
         </Space>

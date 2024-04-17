@@ -7,10 +7,10 @@ export interface IProvidersProps {
 
 export interface INotifyContextType {
   openNotification: (
-    type: INotificationType,
     title: string,
-    subtitle: string,
-    placement: NotificationArgsProps['placement'],
+    type?: INotificationType,
+    subtitle?: string,
+    placement?: NotificationArgsProps['placement'],
   ) => void
 }
 
