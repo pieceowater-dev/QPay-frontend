@@ -28,7 +28,11 @@ jobs:
       - name: Build Docker image
         timeout-minutes: 3
         run: |
-          docker build -t ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY }}:${{ github.sha }} .
+          docker build \
+          -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} \
+          --build-arg BUILD_MODE=main \
+          --build-arg API_ADDRESS=https://grands-pay.com/api \
+          .
 
       - name: Push Docker image to ECR
         timeout-minutes: 2
