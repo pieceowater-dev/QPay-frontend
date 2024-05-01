@@ -33,7 +33,7 @@ WORKDIR /app
 RUN npm install -g serve
 
 # Copy the built app from the previous stage (the 'build' directory) to the working directory
-COPY --from=build /app/build .
+COPY --from=build /app/dist .
 
 # Expose port 80 (default for serve)
 EXPOSE 80
