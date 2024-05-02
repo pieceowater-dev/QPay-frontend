@@ -6,7 +6,7 @@ import { IMainFields } from 'features/auth/auth-form/model/interface'
 import { StyledForgetPass, StyledFormContainer } from 'features/auth/auth-form/model/styles'
 import React, { FC } from 'react'
 import { useCookies } from 'react-cookie'
-import axiosInstance from 'shared/api/api-query/api-query'
+import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
 
 export const AuthForm: FC = () => {
@@ -14,28 +14,30 @@ export const AuthForm: FC = () => {
   const { openNotification } = useNotify()
   const [_, updateToken] = useCookies(['token'])
 
-  const onFinish: FormProps<IMainFields>['onFinish'] = (data) => {
+  const onFinish: FormProps<IMainFields>['onFinish'] = async (data) => {
     if (auth && data.password !== data.confirm) return openNotification('Пароли не совпадают')
 
     if (auth) {
-      axiosInstance
-        .post('/auth/registration', { ...data, confirm: undefined })
-        .then(() => {
+      try {
+        const axiosInstance = await getAxiosInstance()
+
+        await axiosInstance.post('/auth/registration', { ...data, confirm: undefined }).then(() => {
           openNotification('Регистрация прошла успешно', 'success')
           handleAuth()
         })
-        .catch(() => {
-          openNotification('Что-то пошло не так')
-        })
+      } catch (error) {
+        openNotification('Что-то пошло не так')
+      }
     } else {
-      axiosInstance
-        .post('/auth/login', data)
-        .then((res) => {
+      try {
+        const axiosInstance = await getAxiosInstance()
+
+        await axiosInstance.post('/auth/login', data).then((res) => {
           updateToken('token', res.data.token)
         })
-        .catch(() => {
-          openNotification('Что-то пошло не так')
-        })
+      } catch (error) {
+        openNotification('Что-то пошло не так')
+      }
     }
   }
 

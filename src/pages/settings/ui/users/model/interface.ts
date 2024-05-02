@@ -1,5 +1,5 @@
 export interface IUsersTableProps {
-  key: string
+  key: number
   name: string
   email: string
 }

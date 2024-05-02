@@ -2,21 +2,22 @@ import { Button, Drawer, Form, FormProps, Input } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { INewUserFormArgs, INewUserProps } from 'features/settings/new-user/model/interface'
 import React, { FC } from 'react'
-import axiosInstance from 'shared/api/api-query/api-query'
+import { getAxiosInstance } from 'shared/api/api-query/api-query'
 
 export const NewUser: FC<INewUserProps> = ({ open, handleModal }) => {
   const { openNotification } = useNotify()
 
-  const onFinish: FormProps<INewUserFormArgs>['onFinish'] = (data) => {
-    axiosInstance
-      .post('/users', data)
-      .then(() => {
+  const onFinish: FormProps<INewUserFormArgs>['onFinish'] = async (data) => {
+    try {
+      const axiosInstance = await getAxiosInstance()
+
+      await axiosInstance.post('/users', data).then(() => {
         openNotification('Пользователь создан', 'success')
         handleModal()
       })
-      .catch(() => {
-        openNotification('Что-то пошло не так')
-      })
+    } catch (error) {
+      openNotification('Что-то пошло не так')
+    }
   }
 
   return (

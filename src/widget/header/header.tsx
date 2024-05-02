@@ -1,9 +1,12 @@
 import { Flex, Space } from 'antd'
 import { FC } from 'react'
+import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router'
 
 export const Header: FC = () => {
   const navigator = useNavigate()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [token, update, removeToken] = useCookies(['token'])
 
   return (
     <Flex
@@ -28,6 +31,9 @@ export const Header: FC = () => {
           onClick={() => navigator('/settings')}
         >
           Настройки
+        </Space>
+        <Space style={{ cursor: 'pointer', color: '#eeeeee' }} onClick={() => removeToken('token')}>
+          Выйти
         </Space>
       </Flex>
     </Flex>
