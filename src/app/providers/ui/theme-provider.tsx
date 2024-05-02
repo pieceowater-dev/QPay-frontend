@@ -10,8 +10,6 @@ export const ThemeProvider: FC<IProvidersProps> = ({ children }) => {
       theme={{
         token: {
           colorPrimary: '#81DA88',
-          // colorWhite: '#E3E3E3',
-          // colorBlack: '#1D1D1D',
           borderRadius: 8,
         },
         components: {

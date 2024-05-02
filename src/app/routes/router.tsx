@@ -1,3 +1,5 @@
+import { ErrorPage } from 'pages/error'
+import { Settings } from 'pages/settings'
 import React, { lazy } from 'react'
 import { Route, Routes } from 'react-router'
 import { PreloaderPage } from 'shared/ui/preloader-page'
@@ -7,18 +9,16 @@ const Router = () => {
 
   return (
     <Routes>
-      <Route path={'*'} element={<>Error page</>} />
-      <Route path={'/'}>
-        <Route
-          path={'/'}
-          element={
-            <React.Suspense fallback={<PreloaderPage />}>
-              <Main />
-            </React.Suspense>
-          }
-        />
-        <Route path={'dashboard'} element={<>Dashboard page</>} />
-        <Route path={'settings'} element={<>Settings page</>} />
+      <Route path={'*'} element={<ErrorPage />} />
+      <Route
+        path={'/'}
+        element={
+          <React.Suspense fallback={<PreloaderPage />}>
+            <Main />
+          </React.Suspense>
+        }
+      >
+        <Route path={'settings'} element={<Settings />} />
       </Route>
     </Routes>
   )
