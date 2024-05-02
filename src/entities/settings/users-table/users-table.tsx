@@ -1,13 +1,21 @@
 import { Space, TableProps } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { IUsersItems } from 'entities/settings/users-table/model/interface'
+import { INewUserFormArgs } from 'features/settings/new-user/model/interface'
 import { IUsersTableProps } from 'pages/settings/ui/users/model/interface'
 import { useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
+import { useToggle } from 'shared/lib/hooks/use-toggle'
 
 export const usersTable = () => {
   const { openNotification } = useNotify()
+  const [openUser, handleUserOpen] = useToggle()
   const [users, setUsers] = useState([])
+  const [currentUser, setCurrentUser] = useState<INewUserFormArgs | undefined>(undefined)
+
+  const editUser = (data: INewUserFormArgs & { id: number }) => {
+    setCurrentUser(data)
+  }
 
   const deleteUser = async (userId: number) => {
     try {
@@ -37,7 +45,14 @@ export const usersTable = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       render: (_, record) => (
         <Space size='middle'>
-          <a>Редактировать</a>
+          <a
+            onClick={() => {
+              editUser({ password: '', name: record.name, email: record.email, id: record.key })
+              handleUserOpen()
+            }}
+          >
+            Редактировать
+          </a>
           <a onClick={() => deleteUser(record.key)}>Удалить</a>
         </Space>
       ),
@@ -64,5 +79,5 @@ export const usersTable = () => {
     fetchData()
   }, [])
 
-  return { users, columns }
+  return { users, columns, currentUser, setCurrentUser, openUser, handleUserOpen }
 }
