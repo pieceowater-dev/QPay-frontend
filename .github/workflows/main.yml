@@ -31,7 +31,7 @@ jobs:
           docker build \
           -t ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY }}:${{ github.sha }} \
           --build-arg BUILD_MODE=main \
-          --build-arg API_ADDRESS=https://api.grands-pay.com/api \
+          --build-arg API_ADDRESS=https://api.grands-pay.com \
           .
 
       - name: Push Docker image to ECR
