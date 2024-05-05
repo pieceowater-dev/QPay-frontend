@@ -9,7 +9,7 @@ export const ThemeProvider: FC<IProvidersProps> = ({ children }) => {
       componentSize={'middle'}
       theme={{
         token: {
-          colorPrimary: '#81DA88',
+          colorPrimary: '#6ebd74',
           borderRadius: 8,
         },
         components: {
