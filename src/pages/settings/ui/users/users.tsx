@@ -4,7 +4,16 @@ import { NewUser } from 'features/settings/new-user'
 import { FC } from 'react'
 
 export const Users: FC = () => {
-  const { users, columns, currentUser, openUser, handleUserOpen, setCurrentUser } = usersTable()
+  const {
+    users,
+    columns,
+    fetchData,
+    currentUser,
+    openUser,
+    handleUserOpen,
+    setCurrentUser,
+    totalUsers,
+  } = usersTable()
 
   return (
     <>
@@ -22,14 +31,23 @@ export const Users: FC = () => {
       </Flex>
 
       <Table
+        scroll={{ y: 500 }}
         columns={columns}
         dataSource={users}
         bordered={true}
         showHeader={true}
         tableLayout={'fixed'}
+        pagination={{
+          total: totalUsers,
+        }}
       />
 
-      <NewUser open={openUser} handleModal={handleUserOpen} item={currentUser} />
+      <NewUser
+        open={openUser}
+        handleModal={handleUserOpen}
+        item={currentUser}
+        refetch={fetchData}
+      />
     </>
   )
 }

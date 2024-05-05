@@ -14,7 +14,7 @@ export const Header: FC = () => {
       align={'center'}
       style={{
         padding: '1rem',
-        background: '#81DA88',
+        background: '#6ebd74',
         borderBottomLeftRadius: '8px',
         borderBottomRightRadius: '8px',
       }}

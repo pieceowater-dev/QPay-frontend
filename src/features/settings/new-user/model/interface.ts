@@ -2,6 +2,7 @@ export interface INewUserProps {
   open: boolean
   handleModal: () => void
   item?: INewUserFormArgs
+  refetch: () => void
 }
 
 export interface INewUserFormArgs {

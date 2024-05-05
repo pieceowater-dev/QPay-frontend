@@ -1,4 +1,4 @@
-import { Space, TableProps } from 'antd'
+import { Skeleton, Space, TableProps } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { IUsersItems } from 'entities/settings/users-table/model/interface'
 import { INewUserFormArgs } from 'features/settings/new-user/model/interface'
@@ -11,19 +11,42 @@ export const usersTable = () => {
   const { openNotification } = useNotify()
   const [openUser, handleUserOpen] = useToggle()
   const [users, setUsers] = useState([])
+  const [totalUsers, setTotalUsers] = useState(0)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const [currentUser, setCurrentUser] = useState<INewUserFormArgs | undefined>(undefined)
+
+  const fetchData = async (skip?: number) => {
+    try {
+      const axiosInstance = await getAxiosInstance()
+      const res = await axiosInstance.get('/users', { params: { skip: skip || 0 } })
+      const response = res.data.items.map((item: IUsersItems) => ({
+        key: item.id,
+        name: item.name,
+        email: item.email,
+      }))
+
+      setUsers(response)
+      setTotalUsers(res.data.totals.count || 0)
+    } catch (error) {
+      openNotification('Произошла ошибка при загрузке данных о пользователях')
+    }
+  }
 
   const editUser = (data: INewUserFormArgs & { id: number }) => {
     setCurrentUser(data)
   }
 
   const deleteUser = async (userId: number) => {
+    setDeleteLoading(true)
     try {
       const axiosInstance = await getAxiosInstance()
 
-      await axiosInstance.patch(`/users/${userId}`)
-      openNotification('Пользователь удален')
+      await axiosInstance.patch(`/users/${userId}`, { deleted: true })
+      openNotification('Пользователь удален', 'success')
+      fetchData()
+      setDeleteLoading(false)
     } catch (error) {
+      setDeleteLoading(false)
       openNotification('Что-то пошло не так')
     }
   }
@@ -53,31 +76,27 @@ export const usersTable = () => {
           >
             Редактировать
           </a>
-          <a onClick={() => deleteUser(record.key)}>Удалить</a>
+
+          <a onClick={() => (deleteLoading ? null : deleteUser(record.key))}>
+            {deleteLoading ? 'Загрузка' : 'Удалить'}
+          </a>
         </Space>
       ),
     },
   ]
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const axiosInstance = await getAxiosInstance()
-        const res = await axiosInstance.get('/users')
-        const response = res.data.items.map((item: IUsersItems) => ({
-          key: item.id,
-          name: item.name,
-          email: item.email,
-        }))
-
-        setUsers(response)
-      } catch (error) {
-        openNotification('Произошла ошибка при загрузке данных о пользователях')
-      }
-    }
-
     fetchData()
   }, [])
 
-  return { users, columns, currentUser, setCurrentUser, openUser, handleUserOpen }
+  return {
+    users,
+    columns,
+    currentUser,
+    setCurrentUser,
+    openUser,
+    handleUserOpen,
+    totalUsers,
+    fetchData,
+  }
 }
