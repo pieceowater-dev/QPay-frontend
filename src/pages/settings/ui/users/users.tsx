@@ -31,6 +31,7 @@ export const Users: FC = () => {
       </Flex>
 
       <Table
+        style={{ minHeight: '500px' }}
         scroll={{ y: 500 }}
         columns={columns}
         dataSource={users}
