@@ -19,12 +19,20 @@ export const Header: FC = () => {
         borderBottomRightRadius: '8px',
       }}
     >
-      <img
-        src={'/logo.png'}
-        style={{ width: '30px', cursor: 'pointer' }}
+      <div
+        style={{
+          display: 'flex',
+          gap: '15px',
+          alignItems: 'center',
+          color: '#eeeeee',
+          cursor: 'pointer',
+        }}
         onClick={() => navigator('/')}
-        alt={'logo'}
-      />
+      >
+        <img src={'/logo.png'} style={{ width: '30px' }} alt={'logo'} />
+        Grands-Pay
+      </div>
+
       <Flex gap={'15px'}>
         <Space
           style={{ cursor: 'pointer', color: '#eeeeee' }}

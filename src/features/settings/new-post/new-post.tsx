@@ -1,7 +1,6 @@
 import { Button, Drawer, Form, FormProps, Input, Select } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { INewPostFormArgs, INewPostProps } from 'features/settings/new-post/model/interface'
-import { INewUserFormArgs } from 'features/settings/new-user/model/interface'
 import React, { FC, useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useAppSelector } from 'shared/redux/store'
@@ -10,11 +9,25 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
   const { openNotification } = useNotify()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
+  const [devaultValue, setDevaultValue] = useState([])
 
   const options = useAppSelector((state) => state.settings.users)
 
+  const fetchData = async () => {
+    try {
+      const axiosInstance = await getAxiosInstance()
+      if (item && item.id)
+        await axiosInstance.get(`/posts-users-access/posts/${item.id}`).then((res) => {
+          setDevaultValue(res.data)
+        })
+    } catch (error) {
+      openNotification('Что-то пошло не так')
+    }
+  }
+
   useEffect(() => {
     form.resetFields()
+    fetchData()
   }, [item, open])
 
   const onFinish: FormProps<INewPostFormArgs>['onFinish'] = async (data) => {
@@ -28,6 +41,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
           refetch()
           setLoading(false)
         })
+        await axiosInstance.post('/posts-users-access', [{ post: data.users, user: item.id }])
       } else {
         await axiosInstance.post('/posts', data).then(() => {
           openNotification('Пост создан', 'success')
@@ -52,6 +66,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
           name: item?.name || '',
           address: item?.address || '',
           identifier: item?.identifier || '',
+          users: item ? devaultValue : [],
         }}
         style={{ height: '100%' }}
       >
@@ -79,7 +94,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
           <Input />
         </Form.Item>
 
-        <Form.Item<INewUserFormArgs> label={'Посты'} name={'posts'}>
+        <Form.Item<INewPostFormArgs> label={'Посты'} name={'users'}>
           <Select
             mode={'multiple'}
             allowClear={true}

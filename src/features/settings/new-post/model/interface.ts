@@ -10,4 +10,5 @@ export interface INewPostFormArgs {
   address: string
   identifier: string
   id?: number
+  users?: number[]
 }

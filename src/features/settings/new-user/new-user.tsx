@@ -9,6 +9,7 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
   const { openNotification } = useNotify()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
+  const [devaultValue, setDevaultValue] = useState([])
 
   const options = useAppSelector((state) => state.settings.posts)
 
@@ -23,6 +24,7 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
           refetch()
           setLoading(false)
         })
+        await axiosInstance.post('/posts-users-access', [{ post: data.posts, user: item.id }])
       } else {
         await axiosInstance.post('/users', data).then(() => {
           openNotification('Пользователь создан', 'success')
@@ -37,8 +39,21 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
     }
   }
 
+  const fetchData = async () => {
+    try {
+      const axiosInstance = await getAxiosInstance()
+      if (item && item.id)
+        await axiosInstance.get(`/posts-users-access/user/${item.id}`).then((res) => {
+          setDevaultValue(res.data)
+        })
+    } catch (error) {
+      openNotification('Что-то пошло не так')
+    }
+  }
+
   useEffect(() => {
     form.resetFields()
+    fetchData()
   }, [item, open])
 
   return (
@@ -51,6 +66,7 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
           name: item?.name || '',
           email: item?.email || '',
           password: item ? item?.password : undefined,
+          posts: item ? devaultValue : [],
         }}
         style={{ height: '100%' }}
       >
