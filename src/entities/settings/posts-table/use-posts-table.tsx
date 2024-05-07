@@ -5,9 +5,12 @@ import { IPostsTableProps } from 'pages/settings/ui/posts/model/interface'
 import { useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
+import { setPostsState } from 'shared/redux/settings/settings-slice'
+import { useAppDispatch } from 'shared/redux/store'
 
 export const usePostsTable = () => {
   const { openNotification } = useNotify()
+  const dispatch = useAppDispatch()
   const [postModal, handlePostModal] = useToggle()
   const [totalPosts, setTotalPosts] = useState(0)
   const [posts, setPosts] = useState([])
@@ -27,6 +30,11 @@ export const usePostsTable = () => {
         address: item.address,
         identifier: item.identifier,
       }))
+      const select = res.data.items.map((item: IPostsResponse) => ({
+        value: item.id,
+        label: item.name,
+      }))
+      dispatch(setPostsState(select))
 
       setPosts(response)
       setTotalPosts(res.data.totals.count || 0)

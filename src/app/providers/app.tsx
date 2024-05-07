@@ -1,5 +1,6 @@
 import { notification, NotificationArgsProps } from 'antd'
 import { INotificationType, INotifyContextType } from 'app/providers/model/interface'
+import { StoreProvider } from 'app/providers/ui/store-provider'
 import React, { createContext, useContext, useMemo } from 'react'
 
 import { RouterProvider } from '@/app/providers/ui/router-provider'
@@ -34,11 +35,13 @@ export const App = () => {
 
   return (
     <RouterProvider>
-      <ThemeProvider>
-        <NotifyContext.Provider value={notifyContextValue}>
-          <Router />
-        </NotifyContext.Provider>
-      </ThemeProvider>
+      <StoreProvider>
+        <ThemeProvider>
+          <NotifyContext.Provider value={notifyContextValue}>
+            <Router />
+          </NotifyContext.Provider>
+        </ThemeProvider>
+      </StoreProvider>
     </RouterProvider>
   )
 }

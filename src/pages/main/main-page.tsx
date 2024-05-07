@@ -19,11 +19,24 @@ export const MainPage: FC = () => {
         </>
       ) : (
         <Flex
-          justify={'center'}
+          justify={'space-between'}
           align={'center'}
-          style={{ height: '100vh', flexDirection: 'column' }}
+          style={{
+            height: '100vh',
+            justifyContent: 'space-between',
+          }}
         >
-          <Auth />
+          <div
+            style={{
+              width: '60%',
+              height: '100%',
+              backgroundColor: '#6ebd74',
+              backgroundImage: 'linear-gradient(45deg, #6ebd74 50%, #FFFB7D 100%)',
+            }}
+          />
+          <Flex style={{ width: '40%' }} align={'center'} justify={'center'}>
+            <Auth />
+          </Flex>
         </Flex>
       )}
     </>

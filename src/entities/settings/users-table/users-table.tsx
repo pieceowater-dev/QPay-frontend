@@ -6,9 +6,12 @@ import { IUsersTableProps } from 'pages/settings/ui/users/model/interface'
 import { useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
+import { setUsersState } from 'shared/redux/settings/settings-slice'
+import { useAppDispatch } from 'shared/redux/store'
 
 export const usersTable = () => {
   const { openNotification } = useNotify()
+  const dispatch = useAppDispatch()
   const [openUser, handleUserOpen] = useToggle()
   const [users, setUsers] = useState([])
   const [totalUsers, setTotalUsers] = useState(0)
@@ -24,6 +27,14 @@ export const usersTable = () => {
         name: item.name,
         email: item.email,
       }))
+
+      const select = res.data.items.map((item: IUsersItems) => {
+        return {
+          label: item.name,
+          value: item.id,
+        }
+      })
+      dispatch(setUsersState(select))
 
       setUsers(response)
       setTotalUsers(res.data.totals.count || 0)
