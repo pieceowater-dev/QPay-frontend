@@ -10,4 +10,5 @@ export interface INewUserFormArgs {
   email: string
   password: string
   id?: number
+  posts?: number[]
 }

@@ -1,13 +1,17 @@
-import { Button, Drawer, Form, FormProps, Input } from 'antd'
+import { Button, Drawer, Form, FormProps, Input, Select } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { INewPostFormArgs, INewPostProps } from 'features/settings/new-post/model/interface'
+import { INewUserFormArgs } from 'features/settings/new-user/model/interface'
 import React, { FC, useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
+import { useAppSelector } from 'shared/redux/store'
 
 export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) => {
   const { openNotification } = useNotify()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
+
+  const options = useAppSelector((state) => state.settings.users)
 
   useEffect(() => {
     form.resetFields()
@@ -73,6 +77,15 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
           rules={[{ required: true, message: 'Введите Индификатор' }]}
         >
           <Input />
+        </Form.Item>
+
+        <Form.Item<INewUserFormArgs> label={'Посты'} name={'posts'}>
+          <Select
+            mode={'multiple'}
+            allowClear={true}
+            style={{ width: '100%', marginTop: 5 }}
+            options={options}
+          />
         </Form.Item>
 
         <Form.Item style={{ position: 'absolute', bottom: -10, left: 24 }}>

@@ -1,13 +1,16 @@
-import { Button, Drawer, Form, FormProps, Input } from 'antd'
+import { Button, Drawer, Form, FormProps, Input, Select } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { INewUserFormArgs, INewUserProps } from 'features/settings/new-user/model/interface'
 import React, { FC, useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
+import { useAppSelector } from 'shared/redux/store'
 
 export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch }) => {
   const { openNotification } = useNotify()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
+
+  const options = useAppSelector((state) => state.settings.posts)
 
   const onFinish: FormProps<INewUserFormArgs>['onFinish'] = async (data) => {
     setLoading(true)
@@ -73,6 +76,15 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
           rules={[{ required: !item, message: 'Введите пароль' }]}
         >
           <Input.Password />
+        </Form.Item>
+
+        <Form.Item<INewUserFormArgs> label={'Посты'} name={'posts'}>
+          <Select
+            mode={'multiple'}
+            allowClear={true}
+            style={{ width: '100%', marginTop: 5 }}
+            options={options}
+          />
         </Form.Item>
 
         <Form.Item style={{ position: 'absolute', bottom: -10, left: 24 }}>
