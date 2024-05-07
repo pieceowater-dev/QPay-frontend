@@ -1,4 +1,4 @@
-import { Skeleton, Space, TableProps } from 'antd'
+import { Space, TableProps } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { IUsersItems } from 'entities/settings/users-table/model/interface'
 import { INewUserFormArgs } from 'features/settings/new-user/model/interface'
