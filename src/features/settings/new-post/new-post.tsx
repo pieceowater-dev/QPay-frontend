@@ -1,7 +1,10 @@
 import { Button, Drawer, Form, FormProps, Input, Select } from 'antd'
 import { useNotify } from 'app/providers/app'
-import { INewPostFormArgs, INewPostProps } from 'features/settings/new-post/model/interface'
-import { INewUserFormArgs } from 'features/settings/new-user/model/interface'
+import {
+  INewPostFormArgs,
+  INewPostProps,
+  IUsersForPostsResponse,
+} from 'features/settings/new-post/model/interface'
 import React, { FC, useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useAppSelector } from 'shared/redux/store'
@@ -13,8 +16,29 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
 
   const options = useAppSelector((state) => state.settings.users)
 
+  const fetchData = async () => {
+    try {
+      const axiosInstance = await getAxiosInstance()
+      if (item && item.id)
+        await axiosInstance.get(`/posts-users-access/post/${item.id}`).then((res) => {
+          form.setFieldValue(
+            'users',
+            res.data.map((item: IUsersForPostsResponse) => {
+              return {
+                label: item.user.name,
+                value: item.user.id,
+              }
+            }),
+          )
+        })
+    } catch (error) {
+      openNotification('Что-то пошло не так')
+    }
+  }
+
   useEffect(() => {
     form.resetFields()
+    if (open) fetchData()
   }, [item, open])
 
   const onFinish: FormProps<INewPostFormArgs>['onFinish'] = async (data) => {
@@ -22,12 +46,21 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
     try {
       const axiosInstance = await getAxiosInstance()
       if (item && item.id) {
+        const users = data.users
+          ? data.users.map((user) => {
+              return {
+                post: item.id,
+                user: user,
+              }
+            })
+          : []
         await axiosInstance.patch(`/posts/${item.id}`, data).then(() => {
           openNotification('Пост изменен', 'success')
           handeOpen()
           refetch()
           setLoading(false)
         })
+        await axiosInstance.post('/posts-users-access', users)
       } else {
         await axiosInstance.post('/posts', data).then(() => {
           openNotification('Пост создан', 'success')
@@ -79,7 +112,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
           <Input />
         </Form.Item>
 
-        <Form.Item<INewUserFormArgs> label={'Посты'} name={'posts'}>
+        <Form.Item<INewPostFormArgs> label={'Посты'} name={'users'}>
           <Select
             mode={'multiple'}
             allowClear={true}

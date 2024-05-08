@@ -10,4 +10,13 @@ export interface INewPostFormArgs {
   address: string
   identifier: string
   id?: number
+  users?: number[]
+}
+
+export interface IUsersForPostsResponse {
+  id: number
+  user: {
+    id: number
+    name: string
+  }
 }
