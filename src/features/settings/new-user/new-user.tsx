@@ -1,6 +1,10 @@
 import { Button, Drawer, Form, FormProps, Input, Select } from 'antd'
 import { useNotify } from 'app/providers/app'
-import { INewUserFormArgs, INewUserProps } from 'features/settings/new-user/model/interface'
+import {
+  INewUserFormArgs,
+  INewUserProps,
+  IPostsForUsersResponse,
+} from 'features/settings/new-user/model/interface'
 import React, { FC, useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useAppSelector } from 'shared/redux/store'
@@ -9,7 +13,6 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
   const { openNotification } = useNotify()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
-  const [devaultValue, setDevaultValue] = useState([])
 
   const options = useAppSelector((state) => state.settings.posts)
 
@@ -18,13 +21,22 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
     try {
       const axiosInstance = await getAxiosInstance()
       if (item && item.id) {
+        const posts = data.posts
+          ? data.posts.map((post) => {
+              return {
+                post: post,
+                user: item.id,
+              }
+            })
+          : []
+
         await axiosInstance.patch(`/users/${item.id}`, data).then(() => {
           openNotification('Пользователь изменен', 'success')
           handleModal()
           refetch()
           setLoading(false)
         })
-        await axiosInstance.post('/posts-users-access', [{ post: data.posts, user: item.id }])
+        await axiosInstance.post('/posts-users-access', posts)
       } else {
         await axiosInstance.post('/users', data).then(() => {
           openNotification('Пользователь создан', 'success')
@@ -44,7 +56,15 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
       const axiosInstance = await getAxiosInstance()
       if (item && item.id)
         await axiosInstance.get(`/posts-users-access/user/${item.id}`).then((res) => {
-          setDevaultValue(res.data)
+          form.setFieldValue(
+            'posts',
+            res.data.map((item: IPostsForUsersResponse) => {
+              return {
+                label: item.post.name,
+                value: item.post.id,
+              }
+            }),
+          )
         })
     } catch (error) {
       openNotification('Что-то пошло не так')
@@ -66,7 +86,6 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
           name: item?.name || '',
           email: item?.email || '',
           password: item ? item?.password : undefined,
-          posts: item ? devaultValue : [],
         }}
         style={{ height: '100%' }}
       >

@@ -12,3 +12,11 @@ export interface INewUserFormArgs {
   id?: number
   posts?: number[]
 }
+
+export interface IPostsForUsersResponse {
+  id: number
+  post: {
+    id: number
+    name: string
+  }
+}
