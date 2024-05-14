@@ -122,7 +122,7 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
           />
         </Form.Item>
 
-        <Form.Item style={{ position: 'absolute', bottom: -10, left: 24 }}>
+        <Form.Item>
           <Button type='primary' htmlType='submit' loading={loading}>
             Сохранить
           </Button>
