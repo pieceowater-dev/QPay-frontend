@@ -26,7 +26,7 @@ export const Posts: FC = () => {
             handlePostModal()
           }}
         >
-          Новый пост
+          +
         </Button>
       </Flex>
 

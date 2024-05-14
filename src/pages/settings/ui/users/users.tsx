@@ -26,7 +26,7 @@ export const Users: FC = () => {
             handleUserOpen()
           }}
         >
-          Новый пользователь
+          +
         </Button>
       </Flex>
 
