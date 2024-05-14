@@ -6,6 +6,7 @@ import { PreloaderPage } from 'shared/ui/preloader-page'
 
 const Router = () => {
   const Main = lazy(async () => await import('pages/main'))
+  const Dashboard = lazy(async () => await import('pages/dashboard'))
 
   return (
     <Routes>
@@ -18,6 +19,7 @@ const Router = () => {
           </React.Suspense>
         }
       >
+        <Route path={'/'} element={<Dashboard />} />
         <Route path={'settings'} element={<Settings />} />
       </Route>
     </Routes>

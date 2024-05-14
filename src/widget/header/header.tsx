@@ -34,6 +34,9 @@ export const Header: FC = () => {
       </div>
 
       <Flex gap={'15px'}>
+        <Space style={{ cursor: 'pointer', color: '#eeeeee' }} onClick={() => navigator('/')}>
+          Аналитика
+        </Space>
         <Space
           style={{ cursor: 'pointer', color: '#eeeeee' }}
           onClick={() => navigator('/settings')}
