@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  payments: { items: [], total: { count: 0 } },
+  payments: { items: [], totals: { count: 0 } },
 }
 
 export const DashboardSlice = createSlice({

@@ -16,7 +16,7 @@ export const usePaymentData = () => {
       const res = await axiosInstance.get('/payments')
       dispatch(setPaymentsState(res.data))
     } catch (error) {
-      openNotification('Произошла ошибка при загрузке данных о пользователях')
+      openNotification('Произошла ошибка при загрузке данных о платежах')
     }
   }
 
