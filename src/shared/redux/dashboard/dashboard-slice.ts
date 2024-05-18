@@ -2,6 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   payments: { items: [], totals: { count: 0 } },
+  posts: undefined,
+  typeDate: 1,
+  selectedDates: { start: undefined, end: undefined },
+  postsData: [],
 }
 
 export const DashboardSlice = createSlice({
@@ -11,9 +15,27 @@ export const DashboardSlice = createSlice({
     setPaymentsState: (state, action) => {
       state.payments = action.payload
     },
+    setPaymentsPost: (state, action) => {
+      state.posts = action.payload
+    },
+    setPaymentsTypeDate: (state, action) => {
+      state.typeDate = action.payload
+    },
+    setPaymentsSelectedDates: (state, action) => {
+      state.selectedDates = action.payload
+    },
+    setPaymentsPostsData: (state, action) => {
+      state.postsData = action.payload
+    },
   },
 })
 
-export const { setPaymentsState } = DashboardSlice.actions
+export const {
+  setPaymentsState,
+  setPaymentsPost,
+  setPaymentsPostsData,
+  setPaymentsSelectedDates,
+  setPaymentsTypeDate,
+} = DashboardSlice.actions
 
 export default DashboardSlice.reducer
