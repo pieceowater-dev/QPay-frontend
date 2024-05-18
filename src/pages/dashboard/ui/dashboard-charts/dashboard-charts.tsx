@@ -7,34 +7,23 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js'
+import { useBarChart } from 'entities/dashboard/bar-chart'
+import { usePieChart } from 'entities/dashboard/pie-chart'
 import { FC } from 'react'
 import { Bar, Pie } from 'react-chartjs-2'
 import { useMediaQuery } from 'react-responsive'
+import { useAppSelector } from 'shared/redux/store'
+import { PostCard } from 'shared/ui/post-card'
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement)
 
 export const DashboardCharts: FC = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px )' })
-
-  const pie = {
-    labels: ['Наличные', 'Каспи'],
-    datasets: [
-      {
-        data: [60, 40],
-        backgroundColor: ['rgb(110, 189, 116)', 'rgba(218,18,18,0.8)'],
-      },
-    ],
-  }
-  const bar = {
-    labels: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
-    datasets: [
-      {
-        label: 'Общая сумма',
-        data: [12, 19, 3, 5, 2, 3, 7],
-        backgroundColor: 'rgb(110, 189, 116)',
-      },
-    ],
-  }
+  const { pie } = usePieChart()
+  const { bar } = useBarChart()
+  const posts: { label: string; value: number }[] = useAppSelector(
+    (state) => state.dashboard.postsData,
+  )
 
   return (
     <>
@@ -59,9 +48,9 @@ export const DashboardCharts: FC = () => {
 
       <div
         style={{
-          width: '100%',
           height: 100,
           background: '#fafafa',
+          padding: '1rem',
           marginBottom: 20,
           borderRadius: 8,
           overflow: 'auto',
@@ -70,9 +59,9 @@ export const DashboardCharts: FC = () => {
           alignItems: 'center',
         }}
       >
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        {posts.map((item) => (
+          <PostCard key={item.value} value={item.value} name={item.label} />
+        ))}
       </div>
     </>
   )

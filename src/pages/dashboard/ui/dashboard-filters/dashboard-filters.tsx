@@ -33,6 +33,7 @@ export const DashboardFilters: FC<IDashboardProps> = ({ refetch, options }) => {
           maxTagCount={1}
           onChange={(value) => {
             dispatch(setPaymentsPost(value))
+            refetch()
           }}
           style={{ width: isMobile ? '100%' : 200 }}
         />
@@ -49,6 +50,7 @@ export const DashboardFilters: FC<IDashboardProps> = ({ refetch, options }) => {
               dispatch(setPaymentsSelectedDates({ start: undefined, end: undefined }))
 
             dispatch(setPaymentsTypeDate(value))
+            refetch()
           }}
         />
         {type === 6 && (

@@ -4,7 +4,7 @@ import { IColumnPayments } from 'entities/dashboard/payment-data/model/interface
 import { IPostsResponse } from 'entities/settings/posts-table/model/interface'
 import { useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
-import { setPaymentsState } from 'shared/redux/dashboard/dashboard-slice'
+import { setPaymentsPostsData, setPaymentsState } from 'shared/redux/dashboard/dashboard-slice'
 import { useAppDispatch } from 'shared/redux/store'
 
 export const usePaymentData = () => {
@@ -21,6 +21,7 @@ export const usePaymentData = () => {
         label: item.name,
       }))
       setPostSelect(select)
+      dispatch(setPaymentsPostsData(select))
     } catch (error) {
       openNotification('Произошла ошибка при загрузке данных о пользователях')
     }
