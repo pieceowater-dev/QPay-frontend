@@ -9,10 +9,10 @@ import {
 } from 'chart.js'
 import { useBarChart } from 'entities/dashboard/bar-chart'
 import { usePieChart } from 'entities/dashboard/pie-chart'
+import { usePostsChart } from 'entities/dashboard/posts-chart'
 import { FC } from 'react'
 import { Bar, Pie } from 'react-chartjs-2'
 import { useMediaQuery } from 'react-responsive'
-import { useAppSelector } from 'shared/redux/store'
 import { PostCard } from 'shared/ui/post-card'
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement)
@@ -21,9 +21,7 @@ export const DashboardCharts: FC = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px )' })
   const { pie } = usePieChart()
   const { bar } = useBarChart()
-  const posts: { label: string; value: number }[] = useAppSelector(
-    (state) => state.dashboard.postsData,
-  )
+  const { postsData } = usePostsChart()
 
   return (
     <>
@@ -59,7 +57,7 @@ export const DashboardCharts: FC = () => {
           alignItems: 'center',
         }}
       >
-        {posts.map((item) => (
+        {postsData.map((item) => (
           <PostCard key={item.value} value={item.value} name={item.label} />
         ))}
       </div>
