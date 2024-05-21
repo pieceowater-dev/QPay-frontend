@@ -19,7 +19,7 @@ export const useTableData = () => {
       setPaymentTableSum((prevState) => prevState + transformPrice(row.sum))
       return {
         key: row.id,
-        date: row.date ? unixDate(row.date * 1000, 'DMYHM') : '',
+        date: row.datetime ? unixDate(+row.datetime * 1000, 'DMYHM') : '',
         post: row.device.name,
         sum: transformPrice(row.sum),
       }

@@ -1,6 +1,6 @@
 export interface IRowsPaymentResponse {
   id: number
-  date: number
+  datetime: number | string
   sum: string
   device: {
     id: number
