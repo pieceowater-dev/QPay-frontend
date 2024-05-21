@@ -57,7 +57,7 @@ export const DashboardFilters: FC<IDashboardProps> = ({ refetch, options }) => {
           <DatePicker.RangePicker
             onChange={(date) => {
               dispatch(
-                setPaymentsSelectedDates({ start: date?.[0]?.toDate(), end: date?.[1]?.toDate() }),
+                setPaymentsSelectedDates({ start: date?.[0]?.unix(), end: date?.[1]?.unix() }),
               )
             }}
           />
