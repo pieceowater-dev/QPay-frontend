@@ -19,6 +19,7 @@ export const usePostsTable = () => {
   const [currentPost, setCurrentPost] = useState<(IPostsResponse & { id: number }) | undefined>(
     undefined,
   )
+  const [stoppedPosts, setStoppedPosts] = useState<{ id: number; stopped: boolean }[]>([])
 
   const fetchData = async (skip?: number) => {
     try {
@@ -35,7 +36,12 @@ export const usePostsTable = () => {
         label: item.name,
       }))
       dispatch(setPostsState(select))
-
+      setStoppedPosts(
+        res.data.items.map((item: IPostsResponse) => ({
+          id: item.id,
+          stopped: item.stopped,
+        })),
+      )
       setPosts(response)
       setTotalPosts(res.data.totals.count || 0)
     } catch (error) {
@@ -100,7 +106,11 @@ export const usePostsTable = () => {
             Редактировать
           </a>
           <a onClick={() => (stopLoading ? null : deletePost(record.key, true))}>
-            {stopLoading ? 'Загрузка' : 'Приостановить'}
+            {stopLoading
+              ? 'Загрузка'
+              : stoppedPosts.filter((item) => item.id === record.key)[0].stopped
+                ? 'Приостановлен'
+                : 'Приостановить'}
           </a>
           <a onClick={() => (deleteLoading ? null : deletePost(record.key))}>
             {deleteLoading ? 'Загрузка' : 'Удалить'}

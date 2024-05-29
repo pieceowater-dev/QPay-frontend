@@ -43,7 +43,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
             res.data.map((item: IUsersForPostsResponse) => {
               return {
                 label: item.user.name,
-                value: item.user.id,
+                value: item.id,
               }
             }),
           )

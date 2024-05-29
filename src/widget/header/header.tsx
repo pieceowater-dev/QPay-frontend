@@ -34,7 +34,7 @@ export const Header: FC = () => {
         onClick={() => navigator('/')}
       >
         <img src={'/logo.png'} style={{ width: '30px' }} alt={'logo'} />
-        Grands-Pay
+        Grand S - Pay
       </div>
 
       <Flex gap={'15px'}>
