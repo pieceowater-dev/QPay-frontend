@@ -3,4 +3,5 @@ export interface IPostsResponse {
   name: string
   address: string
   identifier: string
+  stopped?: boolean
 }
