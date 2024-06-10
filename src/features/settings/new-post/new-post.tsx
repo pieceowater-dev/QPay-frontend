@@ -122,15 +122,15 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
             <Input />
           </Form.Item>
 
-          <Form.Item<INewPostFormArgs>
-            label={'Индификатор'}
-            name={'identifier'}
-            rules={[{ required: true, message: 'Введите Индификатор' }]}
-          >
-            <Input />
-          </Form.Item>
+          {/* <Form.Item<INewPostFormArgs>*/}
+          {/*  label={'Индификатор'}*/}
+          {/*  name={'identifier'}*/}
+          {/*  rules={[{ required: true, message: 'Введите Индификатор' }]}*/}
+          {/* >*/}
+          {/*  <Input />*/}
+          {/* </Form.Item>*/}
 
-          <Form.Item<INewPostFormArgs> label={'Посты'} name={'users'}>
+          <Form.Item<INewPostFormArgs> label={'Пользователи'} name={'users'}>
             <Select
               mode={'multiple'}
               allowClear={true}
