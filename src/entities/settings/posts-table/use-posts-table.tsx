@@ -29,7 +29,7 @@ export const usePostsTable = () => {
         key: item.id,
         name: item.name,
         address: item.address,
-        identifier: item.identifier,
+        identifier: item.id,
       }))
       const select = res.data.items.map((item: IPostsResponse) => ({
         value: item.id,
@@ -72,6 +72,11 @@ export const usePostsTable = () => {
 
   const columns: TableProps<IPostsTableProps>['columns'] = [
     {
+      title: 'Номер поста',
+      dataIndex: 'identifier',
+      key: 'identifier',
+    },
+    {
       title: 'Имя поста',
       dataIndex: 'name',
       key: 'name',
@@ -80,11 +85,6 @@ export const usePostsTable = () => {
       title: 'Адрес',
       dataIndex: 'address',
       key: 'address',
-    },
-    {
-      title: 'Индификатор',
-      dataIndex: 'identifier',
-      key: 'identifier',
     },
     {
       title: 'Действие',
