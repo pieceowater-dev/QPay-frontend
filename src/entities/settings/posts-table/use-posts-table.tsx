@@ -30,6 +30,7 @@ export const usePostsTable = () => {
         name: item.name,
         address: item.address,
         identifier: item.id,
+        bin: item.bin,
       }))
       const select = res.data.items.map((item: IPostsResponse) => ({
         value: item.id,
@@ -87,6 +88,11 @@ export const usePostsTable = () => {
       key: 'address',
     },
     {
+      title: 'БИН',
+      dataIndex: 'bin',
+      key: 'bin',
+    },
+    {
       title: 'Действие',
       key: 'action',
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -98,6 +104,7 @@ export const usePostsTable = () => {
                 name: record.name,
                 address: record.address,
                 identifier: record.identifier,
+                bin: record.bin,
                 id: record.key,
               })
               handlePostModal()

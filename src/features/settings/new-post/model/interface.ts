@@ -8,7 +8,7 @@ export interface INewPostProps {
 export interface INewPostFormArgs {
   name: string
   address: string
-  identifier: string
+  bin: string
   id?: number
   users?: number[]
 }

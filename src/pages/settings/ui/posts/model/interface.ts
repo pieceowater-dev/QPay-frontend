@@ -3,4 +3,5 @@ export interface IPostsTableProps {
   name: string
   address: string
   identifier: string
+  bin: string
 }
