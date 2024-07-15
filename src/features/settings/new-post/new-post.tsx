@@ -102,7 +102,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
           initialValues={{
             name: item?.name || '',
             address: item?.address || '',
-            identifier: item?.identifier || '',
+            bin: item?.bin || '',
           }}
           style={{ height: '100%' }}
         >
@@ -118,6 +118,14 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
             label={'Адрес'}
             name={'address'}
             rules={[{ required: true, message: 'Введите адрес' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item<INewPostFormArgs>
+            label={'БИН'}
+            name={'bin'}
+            rules={[{ required: true, message: 'Введите бин' }]}
           >
             <Input />
           </Form.Item>
