@@ -17,7 +17,7 @@ export const usePieChart = () => {
         params: { dateType: dateType, start: start, end: end, posts: posts },
       })
       if (res.data.length > 0) {
-        setPieData([res.data[0].sum, res.data[1].sum])
+        setPieData([res.data?.[0]?.sum || 0, res.data?.[1]?.sum || 0])
       } else {
         setPieData([0, 0])
       }
@@ -27,7 +27,9 @@ export const usePieChart = () => {
   }
 
   useEffect(() => {
-    fetchData()
+    if (dateType !== 6 || (start && end)) {
+      fetchData()
+    }
   }, [dateType, start, end, posts])
 
   const pie = {

@@ -18,6 +18,9 @@ export const useTableData = () => {
     const paymentsRows = payments.items.map((row: IRowsPaymentResponse) => {
       setPaymentTableSum((prevState) => prevState + transformPrice(row.sum))
       return {
+        id: row.id,
+        status: row.result === 0 ? 'Не успешный' : 'Успешный',
+        type: row.type === 0 ? 'Наличные' : 'Безналичные',
         key: row.id,
         date: row.datetime ? unixDate(+row.datetime * 1000, 'DMYHM') : '',
         post: row.device.name,

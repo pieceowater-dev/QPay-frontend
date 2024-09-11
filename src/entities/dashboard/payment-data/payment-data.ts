@@ -43,6 +43,21 @@ export const usePaymentData = () => {
 
   const columns: TableProps<IColumnPayments>['columns'] = [
     {
+      title: 'Платеж №',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Статус',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Тип',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
       title: 'Дата',
       dataIndex: 'date',
       key: 'date',
