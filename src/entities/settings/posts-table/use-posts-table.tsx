@@ -2,11 +2,19 @@ import { Space, TableProps } from 'antd'
 import { useNotify } from 'app/providers/app'
 import { IPostsResponse } from 'entities/settings/posts-table/model/interface'
 import { IPostsTableProps } from 'pages/settings/ui/posts/model/interface'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
 import { setPostsState } from 'shared/redux/settings/settings-slice'
 import { useAppDispatch } from 'shared/redux/store'
+
+import {
+  DeleteOutlined,
+  EditOutlined,
+  LoadingOutlined,
+  PauseCircleOutlined,
+  PlayCircleOutlined,
+} from '@ant-design/icons'
 
 export const usePostsTable = () => {
   const { openNotification } = useNotify()
@@ -93,6 +101,19 @@ export const usePostsTable = () => {
       key: 'bin',
     },
     {
+      title: 'Qr-код',
+      key: 'qr',
+      render: (_, record) => (
+        <a
+          href={`https://kaspi.kz/pay/GrandS?service_id=8248&12789=${record.identifier}`}
+          target={'_blank'}
+          rel='noreferrer'
+        >
+          Показать QR
+        </a>
+      ),
+    },
+    {
       title: 'Действие',
       key: 'action',
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -110,17 +131,19 @@ export const usePostsTable = () => {
               handlePostModal()
             }}
           >
-            Редактировать
+            <EditOutlined />
           </a>
           <a onClick={() => (stopLoading ? null : deletePost(record.key, true))}>
-            {stopLoading
-              ? 'Загрузка'
-              : stoppedPosts.filter((item) => item.id === record.key)[0].stopped
-                ? 'Приостановлен'
-                : 'Приостановить'}
+            {stopLoading ? (
+              <LoadingOutlined />
+            ) : stoppedPosts.filter((item) => item.id === record.key)[0].stopped ? (
+              <PlayCircleOutlined />
+            ) : (
+              <PauseCircleOutlined />
+            )}
           </a>
           <a onClick={() => (deleteLoading ? null : deletePost(record.key))}>
-            {deleteLoading ? 'Загрузка' : 'Удалить'}
+            {deleteLoading ? <LoadingOutlined /> : <DeleteOutlined />}
           </a>
         </Space>
       ),
