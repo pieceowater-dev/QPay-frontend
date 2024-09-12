@@ -41,19 +41,6 @@ export const Dashboard: FC = () => {
       dataIndex: 'sum',
       key: 'sum',
     },
-    {
-      title: 'Qr-код',
-      key: 'qr',
-      render: (_, record) => (
-        <a
-          href={`https://kaspi.kz/pay/GrandS?service_id=8248&12789=${record.id}`}
-          target={'_blank'}
-          rel='noreferrer'
-        >
-          Показать
-        </a>
-      ),
-    },
   ]
 
   return (
