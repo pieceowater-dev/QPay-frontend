@@ -15,4 +15,7 @@ export interface ITablePaymentsState {
   date: string
   post: string
   sum: number
+  id: number
+  status: string
+  type: string
 }
