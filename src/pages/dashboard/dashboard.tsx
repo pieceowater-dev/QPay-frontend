@@ -10,6 +10,7 @@ import React, { FC } from 'react'
 export const Dashboard: FC = () => {
   const { fetchData, postSelect } = usePaymentData()
   const { paymentTable, paymentTableSum, totalPaymentTable } = useTableData()
+
   const columns: TableProps<IColumnPayments>['columns'] = [
     {
       title: 'Платеж №',

@@ -15,6 +15,7 @@ export default defineConfig({
     svgr(),
   ],
   resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
       '@': path.resolve(__dirname, './src/'),
       app: `${path.resolve(__dirname, './src/app/')}`,

@@ -58,15 +58,21 @@ export const usePostsTable = () => {
     }
   }
 
-  const deletePost = async (postId: number, stop?: boolean) => {
+  const deletePost = async (postId: number, stop?: boolean, postState?: boolean) => {
     const loading = (state: boolean) => (stop ? setStopLoading(state) : setDeleteLoading(state))
     loading(true)
 
     try {
       const axiosInstance = await getAxiosInstance()
 
-      await axiosInstance.patch(`/posts/${postId}`, stop ? { stopped: true } : { deleted: true })
-      openNotification(`Пост ${stop ? 'приостановлен' : 'удален'}`, 'success')
+      await axiosInstance.patch(
+        `/posts/${postId}`,
+        stop ? { stopped: postState } : { deleted: true },
+      )
+      openNotification(
+        `Пост ${stop ? (!postState ? 'возобновлен' : 'приостановлен') : 'удален'}`,
+        'success',
+      )
       fetchData()
       loading(false)
     } catch (error) {
@@ -133,7 +139,17 @@ export const usePostsTable = () => {
           >
             <EditOutlined />
           </a>
-          <a onClick={() => (stopLoading ? null : deletePost(record.key, true))}>
+          <a
+            onClick={() =>
+              stopLoading
+                ? null
+                : deletePost(
+                    record.key,
+                    true,
+                    !stoppedPosts.filter((item) => item.id === record.key)[0].stopped,
+                  )
+            }
+          >
             {stopLoading ? (
               <LoadingOutlined />
             ) : stoppedPosts.filter((item) => item.id === record.key)[0].stopped ? (
