@@ -1,6 +1,8 @@
+import { ReactNode } from 'react'
+
 export interface IRowsPaymentResponse {
   id: number
-  datetime: number | string
+  createdAt: number | string
   sum: string
   type: number
   result: number
@@ -16,6 +18,6 @@ export interface ITablePaymentsState {
   post: string
   sum: number
   id: number
-  status: string
+  status: ReactNode
   type: string
 }
