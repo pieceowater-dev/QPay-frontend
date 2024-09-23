@@ -60,3 +60,4 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             BUILD_MODE=${{ github.ref_name }}
+            API_ADDRESS="https://api.grands-pay.com"
