@@ -9,7 +9,7 @@
     "build:main": "vite build --mode production",
     "build:dev": "vite build --mode development",
     "lint": "eslint react-template --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": ".env | grep 'ALGA' && vite preview"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
