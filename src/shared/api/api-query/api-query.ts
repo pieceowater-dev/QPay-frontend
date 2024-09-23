@@ -7,7 +7,7 @@ const createAxiosInstance = async () => {
   const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_ADDRESS,
   })
-
+  console.log(import.meta.env.VITE_API_ADDRESS)
   if (token) {
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
   }
