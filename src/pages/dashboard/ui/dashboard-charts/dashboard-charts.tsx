@@ -57,9 +57,13 @@ export const DashboardCharts: FC = () => {
           alignItems: 'center',
         }}
       >
-        {postsData.map((item) => (
-          <PostCard key={item.value} value={item.value} name={item.label} />
-        ))}
+        {postsData.length ? (
+          postsData.map((item) => (
+            <PostCard key={item.value} value={item.value} name={item.label} />
+          ))
+        ) : (
+          <div>Нет данных</div>
+        )}
       </div>
     </>
   )

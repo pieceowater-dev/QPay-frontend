@@ -16,7 +16,7 @@ export const Posts: FC = () => {
   } = usePostsTable()
 
   return (
-    <>
+    <div style={{ minHeight: 350 }}>
       <Flex gap={'10px'} align={'center'} style={{ marginBottom: '10px' }}>
         <div style={{ fontSize: '28px' }}>Посты</div>
         <Button
@@ -31,8 +31,9 @@ export const Posts: FC = () => {
       </Flex>
 
       <Table
-        style={{ minHeight: '500px' }}
-        scroll={{ y: 500 }}
+        scroll={{
+          x: 'max-content',
+        }}
         columns={columns}
         dataSource={posts}
         bordered={true}
@@ -49,6 +50,6 @@ export const Posts: FC = () => {
         refetch={fetchData}
         item={currentPost}
       />
-    </>
+    </div>
   )
 }

@@ -16,7 +16,7 @@ export const Users: FC = () => {
   } = usersTable()
 
   return (
-    <>
+    <div style={{ minHeight: 350 }}>
       <Flex gap={'10px'} align={'center'} style={{ marginBottom: '10px' }}>
         <div style={{ fontSize: '28px' }}>Пользователи</div>
         <Button
@@ -31,8 +31,9 @@ export const Users: FC = () => {
       </Flex>
 
       <Table
-        style={{ minHeight: '500px' }}
-        scroll={{ y: 500 }}
+        scroll={{
+          x: 'max-content',
+        }}
         columns={columns}
         dataSource={users}
         bordered={true}
@@ -49,6 +50,6 @@ export const Users: FC = () => {
         item={currentUser}
         refetch={fetchData}
       />
-    </>
+    </div>
   )
 }

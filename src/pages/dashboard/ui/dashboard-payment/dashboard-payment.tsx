@@ -14,6 +14,9 @@ export const DashboardPayment: FC<IDashboardPaymentProps> = ({ total, sum, colum
         pagination={{
           total: total,
         }}
+        scroll={{
+          x: 'max-content',
+        }}
       />
       <div style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
         {'Итого: ' + sum}

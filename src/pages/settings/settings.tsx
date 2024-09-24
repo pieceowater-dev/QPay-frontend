@@ -5,7 +5,7 @@ import { FC } from 'react'
 
 export const Settings: FC = () => {
   return (
-    <Flex gap={'10px'} style={{ flexDirection: 'column' }}>
+    <Flex style={{ flexDirection: 'column' }} justify={'space-between'}>
       <Users />
       <Posts />
     </Flex>
