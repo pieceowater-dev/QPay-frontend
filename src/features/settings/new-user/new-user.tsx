@@ -77,7 +77,11 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
   }, [item, open])
 
   return (
-    <Drawer title='Создание нового пользователя' onClose={handleModal} open={open}>
+    <Drawer
+      title={item ? 'Изменение пользователя' : 'Создание нового пользователя'}
+      onClose={handleModal}
+      open={open}
+    >
       <Form
         form={form}
         onFinish={onFinish}

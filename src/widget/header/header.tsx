@@ -3,12 +3,14 @@ import { FC } from 'react'
 import { useCookies } from 'react-cookie'
 import { useMediaQuery } from 'react-responsive'
 import { useNavigate } from 'react-router'
+import { useAppSelector } from 'shared/redux/store'
 
 export const Header: FC = () => {
   const navigator = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, update, removeToken] = useCookies(['token'])
   const isMobile = useMediaQuery({ query: '(max-width: 768px )' })
+  const access = useAppSelector((state) => state.settings.role)
 
   return (
     <Flex
@@ -41,12 +43,15 @@ export const Header: FC = () => {
         <Space style={{ cursor: 'pointer', color: '#eeeeee' }} onClick={() => navigator('/')}>
           Аналитика
         </Space>
-        <Space
-          style={{ cursor: 'pointer', color: '#eeeeee' }}
-          onClick={() => navigator('/settings')}
-        >
-          Настройки
-        </Space>
+
+        {access === 'ADMINISTRATOR' && (
+          <Space
+            style={{ cursor: 'pointer', color: '#eeeeee' }}
+            onClick={() => navigator('/settings')}
+          >
+            Настройки
+          </Space>
+        )}
         <Space style={{ cursor: 'pointer', color: '#eeeeee' }} onClick={() => removeToken('token')}>
           Выйти
         </Space>

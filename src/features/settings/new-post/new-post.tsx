@@ -62,39 +62,42 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
     setLoading(true)
     try {
       const axiosInstance = await getAxiosInstance()
+
       if (item && item.id) {
         const users = data.users
-          ? data.users.map((user) => {
-              return {
-                post: item.id,
-                user: user,
-              }
-            })
+          ? data.users.map((user) => ({
+              post: item.id,
+              user: user,
+            }))
           : []
-        await axiosInstance.patch(`/posts/${item.id}`, data).then(() => {
-          openNotification('Пост изменен', 'success')
-          handeOpen()
-          refetch()
-          setLoading(false)
-        })
-        await axiosInstance.post('/posts-users-access', users)
+        await axiosInstance.patch(`/posts/${item.id}`, data)
+        openNotification('Пост изменен', 'success')
+        handeOpen()
+        refetch()
+        await axiosInstance.patch(`/posts-users-access/post/${item.id}`, users)
       } else {
-        await axiosInstance.post('/posts', data).then(() => {
-          openNotification('Пост создан', 'success')
-          handeOpen()
-          refetch()
-          setLoading(false)
+        const res = await axiosInstance.post('/posts', data)
+        await axiosInstance.patch(`/posts-users-access/post/${res.data.id}`, {
+          users: data.users,
         })
+        openNotification('Пост создан', 'success')
+        handeOpen()
+        refetch()
       }
     } catch (error) {
-      openNotification('Что-то пошло не так')
+      openNotification('Что-то пошло не так', 'error')
+    } finally {
       setLoading(false)
     }
   }
 
   return (
     <>
-      <Drawer title='Создание нового поста' onClose={handeOpen} open={open}>
+      <Drawer
+        title={item ? 'Изменение поста' : 'Создание нового поста'}
+        onClose={handeOpen}
+        open={open}
+      >
         <Form
           form={form}
           onFinish={onFinish}

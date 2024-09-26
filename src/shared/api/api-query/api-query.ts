@@ -19,6 +19,7 @@ const createAxiosInstance = async () => {
     (error) => {
       if (error.response && error.response.status === 401) {
         Cookies.remove('token')
+        window.location.replace('/')
       }
       return Promise.reject(error)
     },

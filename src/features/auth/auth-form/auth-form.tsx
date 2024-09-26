@@ -8,10 +8,13 @@ import React, { FC } from 'react'
 import { useCookies } from 'react-cookie'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { useToggle } from 'shared/lib/hooks/use-toggle'
+import { setRoleState } from 'shared/redux/settings/settings-slice'
+import { useAppDispatch } from 'shared/redux/store'
 
 export const AuthForm: FC = () => {
   const [auth, handleAuth] = useToggle()
   const { openNotification } = useNotify()
+  const dispatch = useAppDispatch()
   const [_, updateToken] = useCookies(['token'])
 
   const onFinish: FormProps<IMainFields>['onFinish'] = async (data) => {
@@ -34,6 +37,7 @@ export const AuthForm: FC = () => {
 
         await axiosInstance.post('/auth/login', data).then((res) => {
           updateToken('token', res.data.token)
+          dispatch(setRoleState('refetch'))
         })
       } catch (error) {
         openNotification('Что-то пошло не так')

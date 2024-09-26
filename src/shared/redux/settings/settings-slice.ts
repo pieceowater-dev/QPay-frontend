@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   posts: [],
   users: [],
+  role: '',
 }
 
 export const SettingsSlice = createSlice({
@@ -15,9 +16,12 @@ export const SettingsSlice = createSlice({
     setUsersState: (state, action) => {
       state.users = action.payload
     },
+    setRoleState: (state, action) => {
+      state.role = action.payload
+    },
   },
 })
 
-export const { setPostsState, setUsersState } = SettingsSlice.actions
+export const { setPostsState, setUsersState, setRoleState } = SettingsSlice.actions
 
 export default SettingsSlice.reducer
