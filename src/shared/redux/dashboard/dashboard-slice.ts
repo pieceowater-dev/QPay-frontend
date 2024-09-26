@@ -5,6 +5,7 @@ const initialState = {
   posts: undefined,
   typeDate: 1,
   selectedDates: { start: undefined, end: undefined },
+  pagination: { current: 1, pageSize: 10 },
 }
 
 export const DashboardSlice = createSlice({
@@ -23,10 +24,18 @@ export const DashboardSlice = createSlice({
     setPaymentsSelectedDates: (state, action) => {
       state.selectedDates = action.payload
     },
+    setPaginationPayment: (state, action) => {
+      state.pagination = action.payload
+    },
   },
 })
 
-export const { setPaymentsState, setPaymentsPost, setPaymentsSelectedDates, setPaymentsTypeDate } =
-  DashboardSlice.actions
+export const {
+  setPaymentsState,
+  setPaymentsPost,
+  setPaginationPayment,
+  setPaymentsSelectedDates,
+  setPaymentsTypeDate,
+} = DashboardSlice.actions
 
 export default DashboardSlice.reducer

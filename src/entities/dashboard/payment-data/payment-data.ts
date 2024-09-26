@@ -3,11 +3,14 @@ import { IPostsResponse } from 'entities/settings/posts-table/model/interface'
 import { useEffect, useState } from 'react'
 import { getAxiosInstance } from 'shared/api/api-query/api-query'
 import { setPaymentsState } from 'shared/redux/dashboard/dashboard-slice'
-import { useAppDispatch } from 'shared/redux/store'
+import { useAppDispatch, useAppSelector } from 'shared/redux/store'
 
 export const usePaymentData = () => {
   const { openNotification } = useNotify()
   const dispatch = useAppDispatch()
+  const currentPage = useAppSelector((state) => state.dashboard.pagination.current)
+  const pageSize = useAppSelector((state) => state.dashboard.pagination.pageSize)
+
   const [postSelect, setPostSelect] = useState([])
 
   const fetchPosts = async () => {
@@ -27,7 +30,9 @@ export const usePaymentData = () => {
   const fetchData = async () => {
     try {
       const axiosInstance = await getAxiosInstance()
-      const res = await axiosInstance.get('/payments')
+      const res = await axiosInstance.get('/payments', {
+        params: { take: pageSize, skip: (currentPage - 1) * pageSize },
+      })
       dispatch(setPaymentsState(res.data))
     } catch (error) {
       openNotification('Произошла ошибка при загрузке данных о платежах')
@@ -37,7 +42,7 @@ export const usePaymentData = () => {
   useEffect(() => {
     fetchData()
     fetchPosts()
-  }, [])
+  }, [pageSize, currentPage])
 
   return { fetchData, postSelect }
 }
