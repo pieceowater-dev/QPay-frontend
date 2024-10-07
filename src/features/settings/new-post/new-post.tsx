@@ -43,7 +43,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
             res.data.map((item: IUsersForPostsResponse) => {
               return {
                 label: item.user.name,
-                value: item.id,
+                value: item.user.id,
               }
             }),
           )
@@ -70,6 +70,7 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
         //       user: user,
         //     }))
         //   : []
+
         await axiosInstance.patch(`/posts/${item.id}`, {
           ...data,
           name: data.name.trim(),

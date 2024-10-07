@@ -75,7 +75,7 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
             res.data.map((item: IPostsForUsersResponse) => {
               return {
                 label: item.post.name,
-                value: item.id,
+                value: item.post.id,
               }
             }),
           )
