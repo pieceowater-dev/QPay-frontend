@@ -24,10 +24,18 @@ export const AuthForm: FC = () => {
       try {
         const axiosInstance = await getAxiosInstance()
 
-        await axiosInstance.post('/auth/registration', { ...data, confirm: undefined }).then(() => {
-          openNotification('Регистрация прошла успешно', 'success')
-          handleAuth()
-        })
+        await axiosInstance
+          .post('/auth/registration', {
+            ...data,
+            name: data.name?.trim(),
+            confirm: undefined,
+            password: data.password.trim(),
+            email: data.email.trim(),
+          })
+          .then(() => {
+            openNotification('Регистрация прошла успешно', 'success')
+            handleAuth()
+          })
       } catch (error) {
         openNotification('Что-то пошло не так')
       }

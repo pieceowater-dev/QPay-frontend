@@ -30,20 +30,34 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
             })
           : []
 
-        await axiosInstance.patch(`/users/${item.id}`, data).then(() => {
-          openNotification('Пользователь изменен', 'success')
-          handleModal()
-          refetch()
-          setLoading(false)
-        })
+        await axiosInstance
+          .patch(`/users/${item.id}`, {
+            ...data,
+            name: data.name.trim(),
+            email: data.email.trim(),
+            password: data.password.trim(),
+          })
+          .then(() => {
+            openNotification('Пользователь изменен', 'success')
+            handleModal()
+            refetch()
+            setLoading(false)
+          })
         await axiosInstance.post('/posts-users-access', posts)
       } else {
-        await axiosInstance.post('/users', data).then(() => {
-          openNotification('Пользователь создан', 'success')
-          handleModal()
-          refetch()
-          setLoading(false)
-        })
+        await axiosInstance
+          .post('/users', {
+            ...data,
+            name: data.name.trim(),
+            email: data.email.trim(),
+            password: data.password.trim(),
+          })
+          .then(() => {
+            openNotification('Пользователь создан', 'success')
+            handleModal()
+            refetch()
+            setLoading(false)
+          })
       }
     } catch (error) {
       openNotification('Что-то пошло не так')

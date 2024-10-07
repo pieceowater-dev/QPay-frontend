@@ -64,19 +64,29 @@ export const NewPost: FC<INewPostProps> = ({ open, handeOpen, item, refetch }) =
       const axiosInstance = await getAxiosInstance()
 
       if (item && item.id) {
-        const users = data.users
-          ? data.users.map((user) => ({
-              post: item.id,
-              user: user,
-            }))
-          : []
-        await axiosInstance.patch(`/posts/${item.id}`, data)
+        // const users = data.users
+        //   ? data.users.map((user) => ({
+        //       post: item.id,
+        //       user: user,
+        //     }))
+        //   : []
+        await axiosInstance.patch(`/posts/${item.id}`, {
+          ...data,
+          name: data.name.trim(),
+          bin: data.bin.trim(),
+          address: data.address.trim(),
+        })
         openNotification('Пост изменен', 'success')
         handeOpen()
         refetch()
-        await axiosInstance.patch(`/posts-users-access/post/${item.id}`, users)
+        await axiosInstance.patch(`/posts-users-access/post/${item.id}`, { users: data.users })
       } else {
-        const res = await axiosInstance.post('/posts', data)
+        const res = await axiosInstance.post('/posts', {
+          ...data,
+          name: data.name.trim(),
+          bin: data.bin.trim(),
+          address: data.address.trim(),
+        })
         await axiosInstance.patch(`/posts-users-access/post/${res.data.id}`, {
           users: data.users,
         })
