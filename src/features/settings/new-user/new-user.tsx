@@ -21,21 +21,12 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
     try {
       const axiosInstance = await getAxiosInstance()
       if (item && item.id) {
-        const posts = data.posts
-          ? data.posts.map((post) => {
-              return {
-                post: post,
-                user: item.id,
-              }
-            })
-          : []
-
         await axiosInstance
           .patch(`/users/${item.id}`, {
             ...data,
             name: data.name.trim(),
             email: data.email.trim(),
-            password: data.password.trim(),
+            password: data.password ? data.password.trim() : undefined,
           })
           .then(() => {
             openNotification('Пользователь изменен', 'success')
@@ -43,16 +34,19 @@ export const NewUser: FC<INewUserProps> = ({ open, handleModal, item, refetch })
             refetch()
             setLoading(false)
           })
-        await axiosInstance.post('/posts-users-access', posts)
+        await axiosInstance.patch(`/posts-users-access/user/${item.id}`, {
+          posts: data.posts?.map((pst) => pst.value),
+        })
       } else {
         await axiosInstance
           .post('/users', {
             ...data,
             name: data.name.trim(),
             email: data.email.trim(),
-            password: data.password.trim(),
+            password: data.password ? data.password.trim() : undefined,
           })
-          .then(() => {
+          .then((res) => {
+            console.log(res)
             openNotification('Пользователь создан', 'success')
             handleModal()
             refetch()
